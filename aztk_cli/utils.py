@@ -3,6 +3,7 @@ import getpass
 import sys
 import threading
 import time
+import yaml
 from subprocess import call
 from typing import List
 import azure.batch.models as batch_models
@@ -420,7 +421,7 @@ def utc_to_local(utc_dt):
 
 def print_cluster_conf(cluster_conf: ClusterConfiguration, wait: bool):
     size = cluster_conf.size
-    print("Conf", size, cluster_conf.to_dict())
+    print("COnf", yaml.dump(cluster_conf))
 
     user_configuration = cluster_conf.user_configuration
     log.info("-------------------------------------------")

@@ -47,7 +47,7 @@ class Model(metaclass=ModelMeta):
     def __getitem__(self, k):
         if k not in self._fields:
             raise AztkAttributeError("{0} doesn't have an attribute called {1}".format(self.__class__.__name__, k))
-        print("getting item", self.__class__.__name__, k)
+
         return getattr(self, k)
 
     def __setitem__(self, k, v):
@@ -57,6 +57,11 @@ class Model(metaclass=ModelMeta):
             setattr(self, k, v)
         except InvalidModelFieldError as e:
             self._process_field_error(e, k)
+
+    def __reduce_ex__(self, *args, **kwargs):
+        # ret = super(Model, self).__reduce_ex__(*args, **kwargs)
+        # print("ret", ret)
+        return (self.__class__, self.to_dict())
 
     def validate(self):
         """
@@ -91,11 +96,8 @@ class Model(metaclass=ModelMeta):
 
     def to_dict(self):
         output = dict()
-        for name in self._fields.keys():
-            val = self[name]
-            if hasattr(val, 'to_dict'):
-                val = val.to_dict()
-            output[name] = val
+        for name, field in self._fields.items():
+            output[name] = field.serialize(self)
         return output
 
     def __str__(self):

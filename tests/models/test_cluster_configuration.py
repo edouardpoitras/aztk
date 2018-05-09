@@ -1,4 +1,5 @@
 import pytest
+import yaml
 
 from aztk.models import ClusterConfiguration, Toolkit, UserConfiguration
 from aztk.spark.models.plugins import JupyterPlugin, HDFSPlugin
@@ -11,7 +12,6 @@ def test_vm_count_deprecated():
     with pytest.warns(DeprecationWarning):
         config = ClusterConfiguration(vm_low_pri_count=10)
         assert config.size_low_pri == 10
-
 
 def test_cluster_configuration():
     data = {
@@ -48,3 +48,4 @@ def test_cluster_configuration():
     assert len(config.plugins) == 2
     assert isinstance(config.plugins[0], JupyterPlugin)
     assert isinstance(config.plugins[1], HDFSPlugin)
+

@@ -47,12 +47,6 @@ class Field:
         for validator in self.validators:
             validator(value)
 
-    def decode(self, value):
-        if hasattr(self, "__decode__"):
-            value = self.__decode__(value)
-
-        return value
-
     def __get__(self, instance, owner):
         if instance is not None:
             try:
@@ -72,6 +66,9 @@ class Field:
         """
         if value is not None:
             instance._data[self] = value
+
+    def serialize(self, instance):
+        return self.__get__(instance, None)
 
     def _default(self, model):
         if callable(self.default):
@@ -163,6 +160,17 @@ class List(Field):
 
         instance._data[self] = value
 
+    def serialize(self, instance):
+        items = super().serialize(instance)
+        output = []
+        if items is not None:
+            for item in items:
+                if hasattr(item, 'to_dict'):
+                    output.append(item.to_dict())
+                else:
+                    output.append(item)
+        return output
+
 class Model(Field):
     """
     Field is another model
@@ -194,6 +202,13 @@ class Model(Field):
 
         instance._data[self] = value
 
+    def serialize(self, instance):
+        val = super().serialize(instance)
+        if val is not None:
+            return val.to_dict()
+        else:
+            return None
+
 class Enum(Field):
     """
     Field that should be an enum
@@ -211,3 +226,11 @@ class Enum(Field):
                 available = [e.value for e in self.model]
                 raise InvalidModelFieldError("{0} is not a valid option. Use one of {1}".format(value, available))
         super().__set__(instance, value)
+
+
+    def serialize(self, instance):
+        val = super().serialize(instance)
+        if val is not None:
+            return val.value
+        else:
+            return None

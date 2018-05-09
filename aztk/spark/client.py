@@ -44,7 +44,7 @@ class Client(BaseClient):
         cluster_conf.merge(DEFAULT_CLUSTER_CONFIG)
         cluster_conf.merge(configuration)
         cluster_conf.validate()
-        exit() # TODO remove
+
         cluster_data = self._get_cluster_data(cluster_conf.cluster_id)
         try:
             zip_resource_files = None

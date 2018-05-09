@@ -44,14 +44,17 @@ class PluginPort(Model):
 class PluginConfiguration(Model):
     """
     Plugin manifest that should be returned in the main.py of your plugin
-    :param name: Name of the plugin. Used to reference the plugin
-    :param runOn: Where the plugin should run
-    :param files: List of files to upload
-    :param args:
-    :param env:
+
+    Args
+        name: Name of the plugin. Used to reference the plugin
+        runOn: Where the plugin should run
+        execute: Path to the file to execute(This must match the target of one of the files)
+        files: List of files to upload
+        args: List of argumenets to pass to the executing script
+        env: Dict of environment variables to pass to the script
     """
     name = fields.String()
-    files = fields.List(PluginFile, default=[]) #TODO sort list default
+    files = fields.List(PluginFile)
     execute = fields.String()
     args = fields.List(default=[])
     env = fields.List(default=[])

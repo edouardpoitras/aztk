@@ -1,5 +1,6 @@
 from enum import Enum
 
+import yaml
 import pytest
 
 from aztk.core.models import Model, fields, ModelMergeStrategy, ListMergeStrategy
@@ -252,3 +253,35 @@ def test_merge_nested_model_append_strategy():
     assert obj1.infos[0].age == 29
     assert obj1.infos[1].name == "Frank"
     assert obj1.infos[1].age == 38
+
+
+def test_serialize_simple_model_to_yaml():
+    info = UserInfo(name="John", age=29)
+    output = yaml.dump(info)
+
+    assert output == "!!python/object:test_models.UserInfo {age: 29, name: John}\n"
+
+    info_parsed = yaml.load(output)
+
+    assert isinstance(info_parsed, UserInfo)
+    assert info_parsed.name == "John"
+    assert info_parsed.age == 29
+
+def test_serialize_nested_model_to_yaml():
+    user = User(
+        info=dict(name="John", age=29),
+        enabled=True,
+        state=UserState.Deleting,
+    )
+    output = yaml.dump(user)
+
+    assert output == "!!python/object:test_models.User\nenabled: true\ninfo: {age: 29, name: John}\nstate: deleting\n"
+
+    user_parsed = yaml.load(output)
+
+    assert isinstance(user_parsed, User)
+    assert isinstance(user_parsed.info, UserInfo)
+    assert user_parsed.info.name == "John"
+    assert user_parsed.info.age == 29
+    assert user_parsed.state == UserState.Deleting
+    assert user_parsed.enabled is True

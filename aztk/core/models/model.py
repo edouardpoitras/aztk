@@ -58,10 +58,15 @@ class Model(metaclass=ModelMeta):
         except InvalidModelFieldError as e:
             self._process_field_error(e, k)
 
-    def __reduce_ex__(self, *args, **kwargs):
-        # ret = super(Model, self).__reduce_ex__(*args, **kwargs)
-        # print("ret", ret)
-        return (self.__class__, self.to_dict())
+    # def __reduce_ex__(self, *args, **kwargs):
+    #     ret = super(Model, self).__reduce_ex__(*args, **kwargs)
+    #     print("ret", ret)
+    #     return (self.__class__, self.to_dict())
+    def __getstate__(self):
+        return self.to_dict()
+
+    def __setstate__(self, state):
+        self._update(state)
 
     def validate(self):
         """

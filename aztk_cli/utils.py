@@ -420,8 +420,6 @@ def utc_to_local(utc_dt):
 
 
 def print_cluster_conf(cluster_conf: ClusterConfiguration, wait: bool):
-    size = cluster_conf.size
-
     user_configuration = cluster_conf.user_configuration
     log.info("-------------------------------------------")
     log.info("cluster id:              %s", cluster_conf.cluster_id)

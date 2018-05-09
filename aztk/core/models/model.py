@@ -4,7 +4,7 @@ from aztk.error import InvalidModelError, InvalidModelFieldError, AztkError, Azt
 from aztk.core.models import fields
 
 
-# pylint: disable=W0212
+# pylint: disable=W0212,no-member
 class ModelMeta(type):
     """
     Model Meta class. This takes all the class definition and build the attributes form all the fields definitions.

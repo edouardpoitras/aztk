@@ -3,11 +3,13 @@ import yaml
 from aztk.error import InvalidModelError, InvalidModelFieldError, AztkError, AztkAttributeError
 from aztk.core.models import fields
 
+
 # pylint: disable=W0212
 class ModelMeta(type):
     """
     Model Meta class. This takes all the class definition and build the attributes form all the fields definitions.
     """
+
     def __new__(mcs, name, bases, attrs):
         attrs['_fields'] = {}
 
@@ -24,6 +26,7 @@ class ModelMeta(type):
                 attrs['_fields'][k] = v
 
         return super().__new__(mcs, name, bases, attrs)
+
 
 class Model(metaclass=ModelMeta):
     """
@@ -55,7 +58,6 @@ class Model(metaclass=ModelMeta):
         except InvalidModelFieldError as e:
             self._process_field_error(e, k)
 
-
     def validate(self):
         """
         Validate the entire model
@@ -72,7 +74,6 @@ class Model(metaclass=ModelMeta):
 
         if hasattr(self, '__validate__'):
             self.__validate__()
-
 
     def merge(self, other):
         if not isinstance(other, self.__class__):
@@ -103,7 +104,6 @@ class Model(metaclass=ModelMeta):
     def _update(self, values):
         for k, v in values.items():
             self[k] = v
-
 
     def _process_field_error(self, e: InvalidModelFieldError, field: str):
         if not e.field:

@@ -47,7 +47,7 @@ class Model(metaclass=ModelMeta):
     def __getitem__(self, k):
         if k not in self._fields:
             raise AztkAttributeError("{0} doesn't have an attribute called {1}".format(self.__class__.__name__, k))
-
+        print("getting item", self.__class__.__name__, k)
         return getattr(self, k)
 
     def __setitem__(self, k, v):

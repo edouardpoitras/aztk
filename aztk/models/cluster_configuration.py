@@ -24,7 +24,7 @@ class ClusterConfiguration(Model):
     subnet_id = fields.String()
     plugins = fields.List(PluginConfiguration)
     custom_scripts = fields.List(CustomScript)
-    file_shares = fields.Model(FileShare)
+    file_shares = fields.List(FileShare)
     user_configuration = fields.Model(UserConfiguration)
 
     def __init__(self, *args, **kwargs):

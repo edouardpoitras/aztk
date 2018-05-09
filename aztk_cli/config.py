@@ -75,8 +75,11 @@ def cluster_config_from_dict(config: dict):
             plugins.append(ref.get_plugin())
         config["plugins"] = plugins
 
+    if config.get('username') is not None:
+        config['user_configuration'] = dict(username=config.pop('username'))
+
     if config.get('wait') is not None:
-        wait = config['wait']
+        wait = config.pop('wait')
 
     return ClusterConfiguration.from_dict(config), wait
 

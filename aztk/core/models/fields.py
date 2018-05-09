@@ -70,7 +70,8 @@ class Field:
         Method called when merging 2 model together.
         This is overriden in some of the fields where merge can be handled differently
         """
-        instance._data[self] = value
+        if value is not None:
+            instance._data[self] = value
 
     def _default(self, model):
         if callable(self.default):
@@ -151,8 +152,11 @@ class List(Field):
         return result
 
     def merge(self, instance, value):
+        if value is None:
+            value = []
+
         if self.merge_strategy == ListMergeStrategy.Append:
-            current = instance._data[self]
+            current = instance._data.get(self)
             if current is None:
                 current = []
             value = current + value

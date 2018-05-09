@@ -57,7 +57,7 @@ class SparkConfiguration(Model):
     spark_defaults_conf = fields.String()
     spark_env_sh = fields.String()
     core_site_xml = fields.String()
-    jars = fields.String()
+    jars = fields.List()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

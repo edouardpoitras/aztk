@@ -419,8 +419,10 @@ def utc_to_local(utc_dt):
 
 
 def print_cluster_conf(cluster_conf: ClusterConfiguration, wait: bool):
-    user_configuration = cluster_conf.user_configuration
+    size = cluster_conf.size
+    print("Conf", size, cluster_conf.to_dict())
 
+    user_configuration = cluster_conf.user_configuration
     log.info("-------------------------------------------")
     log.info("cluster id:              %s", cluster_conf.cluster_id)
     log.info("cluster toolkit:         %s %s", cluster_conf.toolkit.software, cluster_conf.toolkit.version)

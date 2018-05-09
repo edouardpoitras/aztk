@@ -58,14 +58,16 @@ class Model(metaclass=ModelMeta):
         except InvalidModelFieldError as e:
             self._process_field_error(e, k)
 
-    # def __reduce_ex__(self, *args, **kwargs):
-    #     ret = super(Model, self).__reduce_ex__(*args, **kwargs)
-    #     print("ret", ret)
-    #     return (self.__class__, self.to_dict())
     def __getstate__(self):
+        """
+        For pickle serialization. This return the state of the model
+        """
         return self.to_dict()
 
     def __setstate__(self, state):
+        """
+        For pickle serialization. This update the current model with the given state
+        """
         self._update(state)
 
     def validate(self):

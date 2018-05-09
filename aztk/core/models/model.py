@@ -91,7 +91,7 @@ class Model(metaclass=ModelMeta):
         if not isinstance(other, self.__class__):
             raise AztkError("Cannot merge {0} as is it not an instance of {1}".format(other, self.__class__.__name__))
 
-        for name, field in other._fields.items():
+        for field in other._fields.values():
             if field in other._data:
                 field.merge(self, other._data[field])
 

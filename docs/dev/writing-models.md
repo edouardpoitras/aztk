@@ -25,6 +25,19 @@ class MyModel(Model):
 
 ```
 
+### Available fields types
+
+Check `aztk/core/models/fields.py` for the sources
+
+* `Field`: Base field class
+* `String`: Field that validate it is given a string
+* `Integer`: Field that validate it is given a int
+* `Float`: Field that validate it is given a float
+* `Boolean`: Field that validate it is given a boolean
+* `List`: Field that validate it is given a list and can also automatically convert entries to the given model type.
+* `Model`: Field that map to another model. If passed a dict it will automatically try to convert to the Model type
+* `Enum`: Field which value should be an enum. It will convert automatically to the enum if given the value.
+
 ## Add validation
 The fields provide basic validation automatically. A field without a default will be marked as required.
 

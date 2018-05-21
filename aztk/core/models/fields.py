@@ -130,6 +130,7 @@ class List(Field):
         self.model = model
         kwargs.setdefault('default', list)
         self.merge_strategy = kwargs.get('merge_strategy', ListMergeStrategy.Append)
+        self.skip_none = kwargs.get('skip_none', True)
 
         super().__init__(
             aztk_validators.List(*kwargs.get('inner_validators', [])), **kwargs)
@@ -137,12 +138,16 @@ class List(Field):
     def __set__(self, instance, value):
         if isinstance(value, collections.MutableSequence):
             value = self._resolve(value)
-
+        if value is None:
+            value = []
         super().__set__(instance, value)
 
     def _resolve(self, value):
         result = []
         for item in value:
+            if item is None and self.skip_none: # Skip none values
+                continue
+
             if self.model and isinstance(item, collections.MutableMapping):
                 item = self.model(**item)
             result.append(item)

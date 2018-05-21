@@ -221,6 +221,20 @@ def test_list_field_convert_model_correctly():
     assert obj.infos[0].name == "John"
     assert obj.infos[0].age == 29
 
+def test_list_field_is_never_required():
+    class UserList(Model):
+        infos = fields.List(UserInfo)
+
+    obj = UserList()
+    obj.validate()
+
+    assert isinstance(obj.infos, (list,))
+    assert len(obj.infos) == 0
+
+    infos = obj.infos
+    infos.append(UserInfo())
+    assert len(obj.infos) == 1
+
 def test_merge_nested_model_append_strategy():
     class UserList(Model):
         infos = fields.List(UserInfo, merge_strategy=ListMergeStrategy.Append)

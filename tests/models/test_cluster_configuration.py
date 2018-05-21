@@ -1,5 +1,4 @@
 import pytest
-import yaml
 
 from aztk.models import ClusterConfiguration, Toolkit, UserConfiguration
 from aztk.spark.models.plugins import JupyterPlugin, HDFSPlugin
@@ -46,6 +45,5 @@ def test_cluster_configuration():
     assert config.user_configuration.username == 'spark'
 
     assert len(config.plugins) == 2
-    assert isinstance(config.plugins[0], JupyterPlugin)
-    assert isinstance(config.plugins[1], HDFSPlugin)
-
+    assert config.plugins[0].name == 'jupyter'
+    assert config.plugins[1].name == 'hdfs'

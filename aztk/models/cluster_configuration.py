@@ -21,7 +21,7 @@ class ClusterConfiguration(Model):
     size_low_pri = fields.Integer(default=0)
     vm_size = fields.String()
 
-    subnet_id = fields.String()
+    subnet_id = fields.String(default=None)
     plugins = fields.List(PluginConfiguration)
     custom_scripts = fields.List(CustomScript)
     file_shares = fields.List(FileShare)

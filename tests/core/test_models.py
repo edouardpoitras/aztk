@@ -6,6 +6,7 @@ import pytest
 from aztk.core.models import Model, fields, ModelMergeStrategy, ListMergeStrategy
 from aztk.error import InvalidModelFieldError, AztkAttributeError
 
+# pylint: disable=C1801
 
 class UserState(Enum):
     Creating = "creating"
@@ -234,6 +235,20 @@ def test_list_field_is_never_required():
     infos = obj.infos
     infos.append(UserInfo())
     assert len(obj.infos) == 1
+
+    obj2 = UserList(infos=None)
+    assert isinstance(obj2.infos, (list,))
+    assert len(obj2.infos) == 0
+
+def test_list_field_ignore_none_entries():
+    class UserList(Model):
+        infos = fields.List(UserInfo)
+
+    obj = UserList(infos=[None, None])
+    obj.validate()
+
+    assert isinstance(obj.infos, (list,))
+    assert len(obj.infos) == 0
 
 def test_merge_nested_model_append_strategy():
     class UserList(Model):
